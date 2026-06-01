@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>樣式 C｜時尚活力</title>
+<title>智傑科技 · HighTech｜網頁設計・系統開發・B2C電商</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -312,12 +312,87 @@
     background: linear-gradient(135deg, #a78bfa, #ec4899);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
+
+  /* ── TABLET (≤ 900px) ── */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 52px; letter-spacing: -2px; }
+    .section { padding: 80px 32px; }
+    .portfolio-wrap, .team-wrap { padding: 80px 32px; }
+    .cta-section { padding: 0 32px 80px; }
+    footer { padding: 32px; }
+    .service-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ── MOBILE (≤ 640px) ── */
+  @media (max-width: 640px) {
+    /* Nav */
+    nav {
+      padding: 0 16px;
+      height: 52px;
+      width: calc(100% - 24px);
+    }
+    .nav-links { display: none; }
+
+    /* Hero */
+    .hero { padding: 90px 20px 60px; }
+    .hero h1 { font-size: clamp(32px, 9vw, 48px); letter-spacing: -1.5px; margin-bottom: 20px; }
+    .hero p { font-size: 15px; margin-bottom: 36px; }
+    .hero-btns { flex-direction: column; align-items: stretch; gap: 12px; margin-bottom: 48px; }
+    .btn-grad, .btn-glass { text-align: center; padding: 14px 24px; }
+
+    /* Stats bar — 2×2 grid */
+    .stats-bar { flex-wrap: wrap; }
+    .stat-item {
+      flex: 0 0 50%;
+      padding: 20px 16px;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-item:nth-child(odd)  { border-right: 1px solid var(--border); }
+    .stat-item:nth-child(3),
+    .stat-item:nth-child(4)    { border-bottom: none; }
+    .stat-num { font-size: 28px; }
+
+    /* Section common */
+    .section { padding: 60px 20px; }
+    .section-title { font-size: 30px; letter-spacing: -0.8px; margin-bottom: 40px; }
+
+    /* Services — single column */
+    .service-grid { grid-template-columns: 1fr; }
+
+    /* Portfolio — single column */
+    .portfolio-wrap { padding: 60px 20px; }
+    .port-grid { grid-template-columns: 1fr; }
+    .port-preview { height: 200px; }
+
+    /* Team — single column */
+    .team-wrap { padding: 60px 20px; }
+    .team-featured,
+    .team-engineers,
+    .team-support { grid-template-columns: 1fr; }
+
+    /* CTA */
+    .cta-section { padding: 0 20px 60px; }
+    .cta-inner { padding: 40px 24px; }
+    .cta-content { flex-direction: column; gap: 24px; }
+    .cta-inner h2 { font-size: 26px; letter-spacing: -0.5px; }
+    .cta-inner p { font-size: 14px; }
+
+    /* Footer */
+    footer {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+      padding: 28px 20px;
+    }
+  }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-logo">D&P Studio</div>
+  <div class="nav-logo">智傑科技 · HighTech</div>
   <div class="nav-links">
     <a href="#services">服務</a>
     <a href="#portfolio">作品</a>
@@ -536,8 +611,8 @@
 </div>
 
 <footer>
-  <div class="footer-logo">D&P Studio</div>
-  <span>© 2026 · 網頁設計 · 系統開發 · B2C電商</span>
+  <div class="footer-logo">智傑科技 · HighTech</div>
+  <span>© 2026 智傑科技 · HighTech · 網頁設計 · 系統開發 · B2C電商</span>
   <span>nicholas_jie98@outlook.com</span>
 </footer>
 
