@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>樣式 C｜時尚活力</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #060612;
+    --surface: #0d0d1f;
+    --border: rgba(255,255,255,0.08);
+    --p1: #7c3aed;
+    --p2: #ec4899;
+    --p3: #06b6d4;
+    --text: #f1f5f9;
+    --muted: #64748b;
+    --white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', 'Noto Sans TC', sans-serif; color: var(--text); background: var(--bg); overflow-x: hidden; }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 100;
+    width: calc(100% - 48px); max-width: 1000px;
+    background: rgba(13,13,31,0.7); backdrop-filter: blur(20px);
+    border: 1px solid var(--border); border-radius: 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px; height: 56px;
+  }
+  .nav-logo {
+    font-size: 18px; font-weight: 800; letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #a78bfa, #ec4899);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    position: relative; padding: 8px 20px; border: none; border-radius: 8px;
+    background: linear-gradient(135deg, var(--p1), var(--p2));
+    color: var(--white); font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* BG GLOWS */
+  .glow {
+    position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none;
+  }
+  .glow-1 { width: 600px; height: 600px; background: rgba(124,58,237,0.18); top: -200px; left: -100px; }
+  .glow-2 { width: 500px; height: 500px; background: rgba(236,72,153,0.12); top: -100px; right: -100px; }
+  .glow-3 { width: 400px; height: 400px; background: rgba(6,182,212,0.1); top: 300px; right: 200px; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 120px 40px 80px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-kicker {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
+    padding: 6px 18px; border-radius: 100px; font-size: 12px;
+    color: #a78bfa; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 36px;
+  }
+  .hero-kicker .dot { width: 6px; height: 6px; background: #a78bfa; border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: 0.3 } }
+
+  .hero h1 {
+    font-size: 72px; font-weight: 900; line-height: 1.05;
+    letter-spacing: -3px; margin-bottom: 28px; position: relative;
+  }
+  .hero h1 .line1 { display: block; color: var(--text); }
+  .hero h1 .line2 {
+    display: block;
+    background: linear-gradient(135deg, #a78bfa 0%, #ec4899 50%, #06b6d4 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 18px; color: var(--muted); max-width: 480px;
+    line-height: 1.7; margin-bottom: 48px;
+  }
+  .hero-btns { display: flex; gap: 16px; justify-content: center; margin-bottom: 80px; }
+  .btn-grad {
+    position: relative; display: inline-block; text-decoration: none;
+    padding: 15px 36px; border-radius: 10px; font-size: 15px; font-weight: 700;
+    background: linear-gradient(135deg, var(--p1), var(--p2));
+    color: var(--white); overflow: hidden; transition: transform 0.2s;
+  }
+  .btn-grad:hover { transform: translateY(-2px); }
+  .btn-glass {
+    display: inline-block; text-decoration: none;
+    padding: 15px 36px; border-radius: 10px; font-size: 15px; font-weight: 600;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    color: var(--text); backdrop-filter: blur(8px); transition: background 0.2s, transform 0.2s;
+  }
+  .btn-glass:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex; gap: 0; border: 1px solid var(--border); border-radius: 16px;
+    background: rgba(255,255,255,0.03); backdrop-filter: blur(12px);
+    overflow: hidden;
+  }
+  .stat-item {
+    flex: 1; padding: 24px 32px; text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-size: 36px; font-weight: 900; letter-spacing: -1px;
+    background: linear-gradient(135deg, #a78bfa, #ec4899);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 500; }
+
+  /* SECTION COMMON */
+  .section { padding: 100px 60px; max-width: 1100px; margin: 0 auto; position: relative; }
+  .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    background: linear-gradient(135deg, #a78bfa, #ec4899);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 16px; display: inline-block;
+  }
+  .section-title { font-size: 44px; font-weight: 900; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 60px; }
+  .section-title span { color: var(--muted); }
+
+  /* SERVICES */
+  .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .service-card {
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+    border-radius: 20px; padding: 40px 32px;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(124,58,237,0.05), transparent);
+    opacity: 0; transition: opacity 0.3s; border-radius: 20px;
+  }
+  .service-card:hover { background: rgba(255,255,255,0.05); border-color: rgba(124,58,237,0.3); transform: translateY(-4px); }
+  .service-card:hover::before { opacity: 1; }
+  .card-icon {
+    width: 52px; height: 52px; border-radius: 14px; font-size: 24px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 24px;
+  }
+  .icon-a { background: rgba(124,58,237,0.15); }
+  .icon-b { background: rgba(236,72,153,0.15); }
+  .icon-c { background: rgba(6,182,212,0.15); }
+  .service-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--text); }
+  .service-card p { font-size: 14px; color: var(--muted); line-height: 1.8; }
+  .service-card ul { margin-top: 20px; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .service-card ul li { font-size: 13px; color: #94a3b8; display: flex; align-items: center; gap: 8px; }
+  .service-card ul li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: linear-gradient(135deg, #a78bfa, #ec4899); flex-shrink: 0; }
+
+  /* PORTFOLIO */
+  .portfolio-wrap { padding: 100px 60px; position: relative; }
+  .portfolio-wrap .section-title { max-width: 1100px; margin: 0 auto 60px; }
+  .portfolio-wrap .eyebrow { max-width: 1100px; margin: 0 auto 16px; display: block; }
+  .port-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .port-card {
+    border-radius: 24px; overflow: hidden; position: relative;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+    transition: transform 0.3s;
+  }
+  .port-card:hover { transform: translateY(-6px); }
+  .port-preview {
+    height: 260px; display: flex; align-items: center; justify-content: center;
+    font-size: 64px; position: relative; overflow: hidden;
+  }
+  .port-preview-a { background: linear-gradient(135deg, #1a0a2e, #2d1248, #1a0a2e); }
+  .port-preview-b { background: linear-gradient(135deg, #001a33, #0a2444, #001a33); }
+  .port-preview .glow-inner {
+    position: absolute; width: 200px; height: 200px; border-radius: 50%;
+    filter: blur(60px); opacity: 0.4;
+  }
+  .port-preview-a .glow-inner { background: var(--p1); }
+  .port-preview-b .glow-inner { background: var(--p3); }
+  .port-body { padding: 32px; }
+  .port-type {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    background: linear-gradient(135deg, #a78bfa, #ec4899);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px;
+  }
+  .port-body h3 { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 10px; letter-spacing: -0.3px; }
+  .port-body p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .port-chips { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-size: 11px; padding: 4px 12px; border-radius: 100px;
+    background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.2);
+    color: #a78bfa; font-weight: 600;
+  }
+  .port-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 20px; font-size: 14px; color: #a78bfa; text-decoration: none; font-weight: 600;
+    transition: gap 0.2s;
+  }
+  .port-link:hover { gap: 10px; }
+
+  /* TEAM */
+  .team-wrap { padding: 100px 60px; position: relative; }
+  .team-wrap .eyebrow { max-width: 1100px; margin: 0 auto 16px; display: block; }
+  .team-wrap .section-title { max-width: 1100px; margin: 0 auto 16px; }
+  .team-subtitle { max-width: 1100px; margin: 0 auto 60px; font-size: 16px; color: var(--muted); line-height: 1.7; }
+
+  /* Featured row — business + CTO side by side */
+  .team-featured { max-width: 1100px; margin: 0 auto 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  /* Secondary row — engineers */
+  .team-engineers { max-width: 1100px; margin: 0 auto 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+
+  /* Bottom row — designer + PM */
+  .team-support { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  .member-card {
+    border-radius: 24px; overflow: hidden;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+    padding: 36px 32px;
+    position: relative;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s;
+  }
+  .member-card:hover { background: rgba(255,255,255,0.04); border-color: rgba(124,58,237,0.25); transform: translateY(-4px); }
+  .member-card::before {
+    content: ''; position: absolute; inset: 0; border-radius: 24px;
+    background: linear-gradient(135deg, rgba(124,58,237,0.06), transparent 60%);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .member-card:hover::before { opacity: 1; }
+
+  /* Avatar circle with initials */
+  .member-avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800; margin-bottom: 20px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+  }
+  .avatar-biz   { background: rgba(124,58,237,0.18); color: #a78bfa; border-color: rgba(124,58,237,0.3); }
+  .avatar-eng   { background: rgba(6,182,212,0.15);  color: #67e8f9;  border-color: rgba(6,182,212,0.3); }
+  .avatar-des   { background: rgba(236,72,153,0.15); color: #f9a8d4;  border-color: rgba(236,72,153,0.3); }
+  .avatar-pm    { background: rgba(251,191,36,0.12); color: #fcd34d;  border-color: rgba(251,191,36,0.25); }
+
+  .member-role {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .role-biz { background: linear-gradient(135deg, #a78bfa, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .role-eng { background: linear-gradient(135deg, #06b6d4, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .role-des { background: linear-gradient(135deg, #ec4899, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .role-pm  { background: linear-gradient(135deg, #fbbf24, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  .member-card h3 { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -0.3px; }
+  .member-exp {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    padding: 3px 10px; border-radius: 100px; margin-bottom: 14px;
+  }
+  .member-exp span { width: 5px; height: 5px; border-radius: 50%; display: inline-block; }
+  .exp-biz span { background: #a78bfa; }
+  .exp-eng span { background: #67e8f9; }
+  .exp-des span { background: #f9a8d4; }
+  .exp-pm  span { background: #fcd34d; }
+
+  .member-card p { font-size: 13px; color: #64748b; line-height: 1.75; }
+  .member-skills { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .mskill {
+    font-size: 11px; padding: 3px 10px; border-radius: 100px; font-weight: 600;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: #94a3b8;
+  }
+
+  /* CTA */
+  .cta-section { padding: 0 60px 100px; }
+  .cta-inner {
+    max-width: 1100px; margin: 0 auto; border-radius: 28px; overflow: hidden;
+    position: relative; padding: 80px;
+    background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(236,72,153,0.15), rgba(6,182,212,0.1));
+    border: 1px solid rgba(124,58,237,0.2);
+  }
+  .cta-inner::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(124,58,237,0.15), transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(236,72,153,0.1), transparent 60%);
+  }
+  .cta-content { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 48px; }
+  .cta-inner h2 { font-size: 36px; font-weight: 900; letter-spacing: -1px; color: var(--text); }
+  .cta-inner p { font-size: 16px; color: var(--muted); margin-top: 10px; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border); padding: 32px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; color: var(--muted); position: relative;
+  }
+  .footer-logo {
+    font-size: 16px; font-weight: 800;
+    background: linear-gradient(135deg, #a78bfa, #ec4899);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">D&P Studio</div>
+  <div class="nav-links">
+    <a href="#services">服務</a>
+    <a href="#portfolio">作品</a>
+    <a href="#team">團隊</a>
+    <a href="#contact">合作</a>
+  </div>
+  <button class="nav-cta">免費諮詢</button>
+</nav>
+
+<div class="hero">
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+  <div class="hero-kicker"><span class="dot"></span>專業網頁設計 · 系統開發團隊</div>
+  <h1>
+    <span class="line1">打造您的</span>
+    <span class="line2">數位品牌</span>
+  </h1>
+  <p>我們將創意設計與技術開發融合，幫您打造令人印象深刻的數位體驗與高效的企業系統。</p>
+  <div class="hero-btns">
+    <a href="#portfolio" class="btn-grad">探索作品集</a>
+    <a href="#contact" class="btn-glass">聊聊您的想法</a>
+  </div>
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-num">15+</div><div class="stat-label">完成專案</div></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">按時交付</div></div>
+    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">核心服務</div></div>
+    <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">技術熱情</div></div>
+  </div>
+</div>
+
+<div class="section" id="services">
+  <div class="eyebrow">SERVICES</div>
+  <div class="section-title">我們能幫您<span>做什麼</span></div>
+  <div class="service-grid">
+    <div class="service-card">
+      <div class="card-icon icon-a">🌐</div>
+      <h3>網頁設計</h3>
+      <p>以使用者體驗為核心，設計兼具美感與轉換率的品牌網站。</p>
+      <ul>
+        <li>品牌形象官網</li>
+        <li>RWD 響應式設計</li>
+        <li>UI/UX 原型規劃</li>
+        <li>前後端整合開發</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="card-icon icon-b">⚙️</div>
+      <h3>系統開發 (ERP)</h3>
+      <p>打造符合您業務邏輯的客製化企業管理系統，讓工作流程自動化。</p>
+      <ul>
+        <li>進銷存管理系統</li>
+        <li>財務與報表模組</li>
+        <li>人事薪資管理</li>
+        <li>資料視覺化儀表板</li>
+      </ul>
+    </div>
+    <div class="service-card">
+      <div class="card-icon icon-c">🛒</div>
+      <h3>B2C 電商官網</h3>
+      <p>從商品展示到結帳流程的完整電商解決方案，快速啟動線上銷售。</p>
+      <ul>
+        <li>購物車與金流串接</li>
+        <li>會員系統管理</li>
+        <li>SEO 基礎優化</li>
+        <li>後台管理介面</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="portfolio-wrap" id="portfolio">
+  <div class="eyebrow">PORTFOLIO</div>
+  <div class="section-title">近期<span>代表作品</span></div>
+  <div class="port-grid">
+    <div class="port-card">
+      <div class="port-preview port-preview-a">
+        <div class="glow-inner"></div>
+        <span style="position:relative;z-index:1;">🌾</span>
+      </div>
+      <div class="port-body">
+        <div class="port-type">品牌官網</div>
+        <h3>長富稻穀乾燥中心</h3>
+        <p>農業客戶品牌形象網站，以在地溫度呈現專業技術，整合服務介紹、製程說明與行動呼籲。</p>
+        <div class="port-chips">
+          <span class="chip">HTML/CSS</span>
+          <span class="chip">RWD</span>
+          <span class="chip">品牌形象</span>
+        </div>
+        <a href="https://duncan8805.github.io/chang-fu-rice/" target="_blank" class="port-link">查看網站 <span>→</span></a>
+      </div>
+    </div>
+    <div class="port-card">
+      <div class="port-preview port-preview-b">
+        <div class="glow-inner"></div>
+        <span style="position:relative;z-index:1;">📊</span>
+      </div>
+      <div class="port-body">
+        <div class="port-type">企業系統 · ERP</div>
+        <h3>農糧收購管理系統</h3>
+        <p>專為農糧收購站打造的完整 ERP 系統，整合車輛管理、地磅計算、牌價設定、例外計價與財務結算。</p>
+        <div class="port-chips">
+          <span class="chip">Web App</span>
+          <span class="chip">ERP 系統</span>
+          <span class="chip">資料管理</span>
+        </div>
+        <a href="#" class="port-link">了解更多 <span>→</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ TEAM ═══════════ -->
+<div class="team-wrap" id="team">
+  <div class="eyebrow">THE TEAM</div>
+  <div class="section-title">認識<span>我們的團隊</span></div>
+  <p class="team-subtitle">跨領域的菁英陣容，從業務策略到技術落地，每個環節都有10年以上的實戰經驗為您把關。</p>
+
+  <!-- 業務 + CTO -->
+  <div class="team-featured">
+    <div class="member-card">
+      <div class="member-avatar avatar-biz">💼</div>
+      <div class="member-role role-biz">Business Development</div>
+      <h3>業務協理</h3>
+      <div class="member-exp exp-biz"><span></span>10+ 年業界經驗</div>
+      <p>深耕台灣中小企業市場，擅長挖掘客戶痛點並提供最適切的數位轉型解決方案。從需求訪談到專案簽約，全程陪伴客戶走過每一步。</p>
+      <div class="member-skills">
+        <span class="mskill">業務開發</span>
+        <span class="mskill">客戶關係管理</span>
+        <span class="mskill">提案簡報</span>
+        <span class="mskill">數位轉型顧問</span>
+      </div>
+    </div>
+    <div class="member-card">
+      <div class="member-avatar avatar-eng">⚡</div>
+      <div class="member-role role-eng">CTO · Full-Stack Engineer</div>
+      <h3>技術長 (CTO)</h3>
+      <div class="member-exp exp-eng"><span></span>10+ 年業界經驗</div>
+      <p>全端技術架構師，主導系統設計與技術選型，確保每個專案具備高可用性、安全性與未來擴展性。對開發流程與程式碼品質有高度要求。</p>
+      <div class="member-skills">
+        <span class="mskill">系統架構</span>
+        <span class="mskill">Full-Stack</span>
+        <span class="mskill">DevOps</span>
+        <span class="mskill">資料庫設計</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 Engineers -->
+  <div class="team-engineers">
+    <div class="member-card">
+      <div class="member-avatar avatar-eng">🛠️</div>
+      <div class="member-role role-eng">Full-Stack Engineer</div>
+      <h3>全端工程師 I</h3>
+      <div class="member-exp exp-eng"><span></span>10+ 年業界經驗</div>
+      <p>擅長前後端整合與 API 設計，負責核心業務邏輯實作與效能優化。</p>
+      <div class="member-skills">
+        <span class="mskill">React</span>
+        <span class="mskill">Node.js</span>
+        <span class="mskill">REST API</span>
+      </div>
+    </div>
+    <div class="member-card">
+      <div class="member-avatar avatar-eng">🔧</div>
+      <div class="member-role role-eng">Full-Stack Engineer</div>
+      <h3>全端工程師 II</h3>
+      <div class="member-exp exp-eng"><span></span>10+ 年業界經驗</div>
+      <p>專精 ERP 系統模組開發，熟悉企業流程自動化與資料庫架構規劃。</p>
+      <div class="member-skills">
+        <span class="mskill">Vue.js</span>
+        <span class="mskill">C#</span>
+        <span class="mskill">MySQL</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Designer + PM -->
+  <div class="team-support">
+    <div class="member-card">
+      <div class="member-avatar avatar-des">🎨</div>
+      <div class="member-role role-des">UI/UX Designer</div>
+      <h3>UI/UX 設計師</h3>
+      <div class="member-exp exp-des"><span></span>8 年業界經驗</div>
+      <p>以使用者研究為基礎，打造直覺且美觀的介面體驗。擅長從 Wireframe 到 Design System 的完整設計流程，確保視覺一致性與品牌調性。</p>
+      <div class="member-skills">
+        <span class="mskill">Figma</span>
+        <span class="mskill">使用者研究</span>
+        <span class="mskill">Design System</span>
+        <span class="mskill">品牌視覺</span>
+      </div>
+    </div>
+    <div class="member-card">
+      <div class="member-avatar avatar-pm">📋</div>
+      <div class="member-role role-pm">Project Manager</div>
+      <h3>專案經理 (PM)</h3>
+      <div class="member-exp exp-pm"><span></span>10+ 年業界經驗</div>
+      <p>橋接客戶需求與技術開發，確保專案如期如質交付。擅長敏捷開發流程管理，定期與客戶同步進度，讓每個里程碑都清晰可預期。</p>
+      <div class="member-skills">
+        <span class="mskill">Agile / Scrum</span>
+        <span class="mskill">需求分析</span>
+        <span class="mskill">風險管理</span>
+        <span class="mskill">跨部門協作</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-section" id="contact">
+  <div class="cta-inner">
+    <div class="cta-content">
+      <div>
+        <h2>有個想法想實現？</h2>
+        <p>跟我們聊聊，我們提供免費的初步評估與規劃建議。</p>
+      </div>
+      <a href="mailto:nicholas_jie98@outlook.com" class="btn-grad" style="white-space:nowrap;">開始合作 →</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">D&P Studio</div>
+  <span>© 2026 · 網頁設計 · 系統開發 · B2C電商</span>
+  <span>nicholas_jie98@outlook.com</span>
+</footer>
+
+</body>
+</html>
